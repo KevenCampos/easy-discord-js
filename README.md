@@ -15,7 +15,7 @@ EaseDiscordJS is an unofficial extension of the "discord.js" library. Our extens
 ```sh
 npm install ease-discord-js
 ```
-## Exemplo de Uso
+## Example of use
 ```js
 import { EaseLogin } from '@ease-discord-js';
 
@@ -47,7 +47,7 @@ login.client.on('ready', async (client) => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
 ```
-## Autores
+## Authors
 
 - [@KevenCampos](https://www.github.com/KevenCampos)
 

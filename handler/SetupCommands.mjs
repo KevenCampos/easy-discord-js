@@ -20,7 +20,9 @@ export default class SetupCommand {
         client.slashCommands = new Discord.Collection();
         
         // Lê o diretório de comandos de forma síncrona
-        const commandFolders = fs.readdirSync(`${root_path}/${this.commandsPath}`);
+
+        let commandFolders = null;
+        try { commandFolders = fs.readdirSync(`${root_path}/${this.commandsPath}`) }catch(e){  }
 
         if (commandFolders){
             for (const folder of commandFolders) {
@@ -40,8 +42,10 @@ export default class SetupCommand {
                 }
             }
         }
-        
-        const componentsFolder = fs.readdirSync(`${root_path}/${this.componentsPath}`);
+
+        let componentsFolder = null;
+        try { componentsFolder = fs.readdirSync(`${root_path}/${this.componentsPath}`) }catch(e){  }
+
         if (componentsFolder){
             for (const folder of componentsFolder) {
                 const componentFiles = fs.readdirSync(`${root_path}/${this.componentsPath}/${folder}`).filter(file => (file.endsWith('.mjs') || file.endsWith('.js') || file.endsWith(".ts")) );
