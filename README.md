@@ -13,11 +13,11 @@ EasyDiscordJS is an unofficial extension of the "discord.js" library. Our extens
 
 ## Installation
 ```sh
-npm install easydiscordjs
+npm install easy-discord-js
 ```
 ## Exemplo de Uso
 ```js
-import { EasyLogin } from '@easydiscordjs';
+import { EasyLogin } from '@easy-discord-js';
 
 const token = "your_token_here";
 

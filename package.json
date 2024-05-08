@@ -1,5 +1,5 @@
 {
-  "name": "easydiscordjs",
+  "name": "easy-discord-js",
   "version": "1.0.0",
   "description": "EasyDiscordJS is an unofficial extension of the 'discord.js' library. Our extension aims to simplify the development of Discord bots, promoting cleaner code and easier maintenance.  ",
   "main": "index.mjs",
