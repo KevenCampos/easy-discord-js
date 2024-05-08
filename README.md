@@ -1,7 +1,7 @@
 
-# EasyDiscordJS
+# EaseDiscordJS
 
-EasyDiscordJS is an unofficial extension of the "discord.js" library. Our extension aims to simplify the development of Discord bots, promoting cleaner code and easier maintenance.
+EaseDiscordJS is an unofficial extension of the "discord.js" library. Our extension aims to simplify the development of Discord bots, promoting cleaner code and easier maintenance.
 
 ## Features
 - Error prevention with user-friendly messages
@@ -13,11 +13,11 @@ EasyDiscordJS is an unofficial extension of the "discord.js" library. Our extens
 
 ## Installation
 ```sh
-npm install easy-discord-js
+npm install ease-discord-js
 ```
 ## Exemplo de Uso
 ```js
-import { EasyLogin } from '@easy-discord-js';
+import { EaseLogin } from '@ease-discord-js';
 
 const token = "your_token_here";
 
@@ -25,7 +25,7 @@ const token = "your_token_here";
 const commandsPath = "./commands";
 const componentsPath = "./components";
 
-const login = new EasyLogin({token: token, commandsPath, componentsPath});
+const login = new EaseLogin({token: token, commandsPath, componentsPath});
 
 login.client.on('ready', async (client) => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -42,7 +42,7 @@ const intents = [
     Discord.GatewayIntentBits.MessageContent
 ]
 
-const login = new EasyLogin({token: token, commandsPath, componentsPath, intents});
+const login = new EaseLogin({token: token, commandsPath, componentsPath, intents});
 login.client.on('ready', async (client) => {
     console.log(`Logged in as ${client.user.tag}!`);
 });

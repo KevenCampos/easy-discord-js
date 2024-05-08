@@ -1,4 +1,4 @@
-import EasyLogin from './handler/Login.mjs';
+import EaseLogin from './handler/Login.mjs';
 import CreateEmbed from './components/CreateEmbed.mjs';
 import CreateButton from './components/CreateButton.mjs';
 import CreateRow from './components/CreateRow.mjs';
@@ -10,7 +10,7 @@ import getInteractionCallback from './handler/getInteractionCallback.mjs';
 const CreateSelect = new _CreateSelect();
 
 export {
-    EasyLogin,
+    EaseLogin,
     CreateEmbed,
     CreateButton,
     CreateRow,
