@@ -1,5 +1,5 @@
 {
-  "name": "easy-discord-js",
+  "name": "ease-discord-js",
   "version": "1.0.0",
   "description": "EasyDiscordJS is an unofficial extension of the 'discord.js' library. Our extension aims to simplify the development of Discord bots, promoting cleaner code and easier maintenance.  ",
   "main": "index.mjs",
@@ -7,5 +7,18 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "KevenCampos",
-  "license": "ISC"
+  "license": "ISC",
+  "keywords": [
+    "Discord",
+    "helper",
+    "discord-helper",
+    "discord-bot",
+    "discord.js",
+    "discord-easy",
+    "easy-discord",
+    "easy-discord-js"
+  ],
+  "dependencies": {
+    "discord.js": "^14.15.2"
+  }
 }

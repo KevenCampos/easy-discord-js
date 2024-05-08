@@ -1,5 +1,4 @@
 import Discord from "discord.js";
-import crypto from "crypto";
 import InteractionHandler from "../handler/InteractionHandler.mjs";
 
 const inputTypes = {text: Discord.TextInputBuilder}
@@ -21,9 +20,7 @@ export default class {
         }
 
         if (callback){
-            let modalDataHash = crypto.createHash('sha256').update(title).digest('hex').substring(0, 16);
-            customId = modalDataHash;
-
+            buttonData.customId = `${buttonData.title.replace(/ /g, "_").toLowerCase()}_${inputs?.length}`;
             new InteractionHandler({ customId: customId, callback: callback});
         }
 

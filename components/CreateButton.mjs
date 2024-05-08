@@ -1,5 +1,5 @@
 import Discord from 'discord.js';
-import InteractionHandler, { interactionHandlers } from "../handler/InteractionHandler.mjs";
+import InteractionHandler from "../handler/InteractionHandler.mjs";
 
 export default class {
     constructor(buttonData) {

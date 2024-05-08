@@ -1,7 +1,5 @@
 import Discord from 'discord.js';
 
-
-
 export default class {
     UserSelectMenuBuilder(menuData){
         try {
