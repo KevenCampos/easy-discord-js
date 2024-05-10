@@ -2,9 +2,23 @@
   "name": "ease-discord-js",
   "version": "1.0.6",
   "description": "EaseDiscordJS is an unofficial extension of the 'discord.js' library. Our extension aims to simplify the development of Discord bots, promoting cleaner code and easier maintenance.  ",
+  "homepage": "https://camposcodes.gitbook.io/easediscordjs/",
   "main": "index.mjs",
   "scripts": {
+    "dev": "nodemon _test/index.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/KevenCampos/easy-discord-js/issues",
+    "email": "keven.mto@hotmail.com"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://www.paypal.com/donate/?hosted_button_id=DY2LFD4UYWQ2J"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KevenCampos/easy-discord-js/"
   },
   "author": "KevenCampos",
   "license": "ISC",
@@ -19,6 +33,12 @@
     "easy-discord-js"
   ],
   "dependencies": {
-    "discord.js": "^14.15.2"
+    "discord.js": "^14.15.2",
+    "dotenv": "^16.4.5"
+  },
+  "imports": {
+    "#ease-discord-js": [
+      "./index.mjs"
+    ]
   }
 }

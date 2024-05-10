@@ -1,10 +1,12 @@
 import Discord from "discord.js";
 import path from "node:path";
 import fs from "fs";
+
 import { pathToFileURL } from 'url';
+import { CustomError } from "../index.mjs";
 
 export default class SetupCommand {
-    constructor(client, commandsPath = "./commands", componentsPath = "./components"){
+    constructor(client, commandsPath, componentsPath){
         this.client = client;
         this.SlashsArray = [];
 
@@ -19,41 +21,42 @@ export default class SetupCommand {
         client = client;
         client.slashCommands = new Discord.Collection();
         
-        // Lê o diretório de comandos de forma síncrona
+        if (this.commandsPath){
+            const files = this.getRecursiveFiles(`${root_path}/${this.commandsPath}`);
+            if (!files) throw new CustomError("cyan", `Commands path not found: '${this.commandsPath}'. You need to pass a valid path to the commands folder`);
 
-        let commandFolders = null;
-        try { commandFolders = fs.readdirSync(`${root_path}/${this.commandsPath}`) }catch(e){  }
+            for (const file of files) {
+                
+                const isValidFile = file.endsWith('.mjs') || file.endsWith('.js') || file.endsWith(".ts");
+                if (!isValidFile) continue; 
 
-        if (commandFolders){
-            for (const folder of commandFolders) {
-                // Lê os arquivos dentro de cada pasta de comando
-                const commandFiles = fs.readdirSync(`${this.commandsPath}/${folder}`).filter(file => (file.endsWith('.mjs') || file.endsWith('.js') || file.endsWith(".ts")) );
-    
-                for (const file of commandFiles) {
-                    // Importa cada arquivo de comando individualmente
-                    const commandPath = pathToFileURL(`${root_path}/${this.commandsPath}/${folder}/${file}`).href;
-                    const command = await import(commandPath);
-    
-                    // Verifica se o arquivo exporta um comando válido
-                    if (command.default) {
-                        client.slashCommands.set(command.default.name, command.default);
-                        this.SlashsArray.push(command.default);
-                    }
+                const commandPath = pathToFileURL(file).href;
+                const command = await import(commandPath).catch(err => {
+                    throw new CustomError('cyan', `Error on import command: ${err}`)
+                });
+
+                if (command?.default) {
+                    const isValidCommand = command.default.name && command.default.run;
+                    if (!isValidCommand) throw new CustomError('cyan', `Invalid command: ${command.default.name}. Command should have a unique name and a run function`);
+
+                    client.slashCommands.set(command.default.name, command.default);
+                    this.SlashsArray.push(command.default);
                 }
             }
         }
 
-        let componentsFolder = null;
-        try { componentsFolder = fs.readdirSync(`${root_path}/${this.componentsPath}`) }catch(e){  }
+        if (this.componentsPath){
+            const files = this.getRecursiveFiles(`${root_path}/${this.componentsPath}`);
+            if (!files) throw new CustomError("cyan", `Components path not found: '${this.componentsPath}'. You need to pass a valid path to the components folder`);
 
-        if (componentsFolder){
-            for (const folder of componentsFolder) {
-                const componentFiles = fs.readdirSync(`${root_path}/${this.componentsPath}/${folder}`).filter(file => (file.endsWith('.mjs') || file.endsWith('.js') || file.endsWith(".ts")) );
+            for (const file of files) {
+                const isValidFile = file.endsWith('.mjs') || file.endsWith('.js') || file.endsWith(".ts");
+                if (!isValidFile) continue; 
 
-                for (const file of componentFiles) {
-                    const componentPath = pathToFileURL(`${root_path}/${this.componentsPath}/${folder}/${file}`).href;
-                    await import(componentPath);
-                }
+                const componentPath = pathToFileURL(file).href;
+                await import(componentPath).catch(err => {
+                    throw new CustomError('cyan', `Error on import component: ${err}`)
+                });
             }
         }
 
@@ -98,5 +101,16 @@ export default class SetupCommand {
                 }
             }   
         });
+    }
+
+    getRecursiveFiles = (dir) => {
+        if (!fs.existsSync(dir)) return null;
+
+        const dirents = fs.readdirSync(dir, { withFileTypes: true });
+        const files = dirents.map(dirent => {
+            const res = path.resolve(dir, dirent.name);
+            return dirent.isDirectory() ? this.getRecursiveFiles(res) : res;
+        });
+        return Array.prototype.concat(...files);
     }
 }

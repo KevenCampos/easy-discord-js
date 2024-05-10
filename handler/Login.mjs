@@ -1,5 +1,6 @@
 import Discord from 'discord.js';
 import SetupCommand from './SetupCommands.mjs';
+import { defaultSettingsCache, CustomError } from '../index.mjs';
 import { interactionHandlers } from './InteractionHandler.mjs';
 
 const allIntents = [
@@ -15,21 +16,43 @@ const allIntents = [
     Discord.GatewayIntentBits.DirectMessageTyping
 ]
 
-export default class Login {
-    constructor(options = {}){
-        if (!options.token) throw new Error('>> Token is required');
-        if (options.commandsPath && typeof options.commandsPath !== 'string') throw new Error('>> CommandsPath must be a string');
-        if (options.componentsPath && typeof options.componentsPath !== 'string') throw new Error('>> ComponentsPath must be a string');
+export default class EaseClient {
+    constructor(token){
+        if (!token) throw new CustomError('cyan', '>> Token is required');
 
-        this.intents = options.intents || allIntents;
-        this.token = options.token;
-        this.commandsPath = options.commandsPath;
-        this.componentsPath = options.componentsPath;
-        
+        this.intents = allIntents;
+        this.token = token;
+    }
+
+    login = () => {
         this.client = new Discord.Client({intents: this.intents})
         this.client.login(this.token);
-
         this.startListening();
+
+        return this.client;
+    }
+
+    set = (key, value) => {
+        const validKeysAndFunctions = {
+            commandsPath: { test: (value) => typeof value === 'string', error: "should be a string"},
+            componentsPath: { test: (value) => typeof value === 'string', error: "should be a string"},
+            intents: { test: (value) => Array.isArray(value), error: "should be a array"},
+        }
+
+        if (!validKeysAndFunctions[key]) throw new CustomError('cyan', `>> set: Key '${key}' not found`);
+        if (!validKeysAndFunctions[key].test(value)) throw new CustomError('cyan', `>> set: Value of '${key}' ${validKeysAndFunctions[key].error}`);
+
+        this[key] = value;
+    }
+
+    setDefault = (component, value) => {
+        const validComponents = ['button', 'select', 'modal'];  
+
+        if (!component) throw new CustomError('cyan', '>> setDefault: Component (string) is required');
+        if (!validComponents.includes(component)) throw new CustomError('cyan', `>> setDefault: Component '${component}' not found`);
+        if (!value) throw new CustomError('cyan', '>> setDefault: Value (object) is required');
+
+        defaultSettingsCache.set(component, value);
     }
 
     startListening = () => {

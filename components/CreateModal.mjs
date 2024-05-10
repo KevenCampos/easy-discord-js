@@ -1,5 +1,6 @@
 import Discord from "discord.js";
 import InteractionHandler from "../handler/InteractionHandler.mjs";
+import { defaultSettingsCache, CustomError } from '../index.mjs';
 
 const inputTypes = {text: Discord.TextInputBuilder}
 
@@ -7,20 +8,23 @@ export default class {
     constructor(modalData) {
         let {title, inputs, customId, callback} = modalData;
 
+        title = title || defaultSettingsCache.get("modal")?.title;
+        customId = customId || defaultSettingsCache.get("modal")?.customId;
+
         if (!title) {
-            throw new Error('>> Modal title is required');
+            throw new CustomError('cyan', '>> Modal title is required');
         }
 
         if (!inputs || inputs?.length === 0) {
-            throw new Error('>> Modal inputs is required');
+            throw new CustomError('cyan', '>> Modal inputs is required');
         }
 
         if (!customId && !callback){
-            throw new Error('>> Modal customId or callback is required');
+            throw new CustomError('cyan', '>> Modal customId or callback is required');
         }
 
         if (callback){
-            buttonData.customId = `${buttonData.title.replace(/ /g, "_").toLowerCase()}_${inputs?.length}`;
+            customId = `${title.replace(/ /g, "_").toLowerCase()}_${inputs?.length}`;
             new InteractionHandler({ customId: customId, callback: callback});
         }
 
@@ -30,24 +34,24 @@ export default class {
 
         inputs.forEach(input => {
             if (!input.type) {
-                throw new Error('>> Input type is required');
+                throw new CustomError('cyan', '>> Input type is required');
             }
 
             if (!input.label) {
-                throw new Error('>> Input label is required');
+                throw new CustomError('cyan', '>> Input label is required');
             }
 
             if (!input.style) {
-                throw new Error('>> Input style is required');
+                throw new CustomError('cyan', '>> Input style is required');
             }
 
             if (!input.customId) {
-                throw new Error('>> Input custom_id is required');
+                throw new CustomError('cyan', '>> Input custom_id is required');
             }
 
             const inputTypeFunction = inputTypes[input.type];
             if (!inputTypeFunction) {
-                throw new Error('>> Invalid input type');
+                throw new CustomError('cyan', '>> Invalid input type');
             }
 
             const newComponent = new inputTypeFunction();

@@ -8,7 +8,7 @@ EaseDiscordJS is an unofficial extension of the "discord.js" library. Our extens
 - Callback functions
 - Less code, more efficiency
 - Code and performance optimization
-- Comprehensive documentation
+- Comprehensive (documentation)["https://camposcodes.gitbook.io/easediscordjs"]
 
 
 ## Installation
@@ -17,17 +17,18 @@ npm install ease-discord-js
 ```
 ## Example of use
 ```js
-import { EaseLogin } from '@ease-discord-js';
+import { EaseClient } from "ease-discord-js"
+const easeClient = new EaseClient("YOUR_TOKEN_HERE");
 
-const token = "your_token_here";
+// Setting the paths for the commands and components
+easeClient.set("commandsPath", "./_test/commands"); // Optional
+easeClient.set("componentsPath", "./_test/components"); // Optional
 
-// commandsPath and componentsPath are optional parameters, you can use it to load the folder where your commands and components are located, if you want to do this process manually it is also possible.
-const commandsPath = "./commands";
-const componentsPath = "./components";
+// Setting default values for the components, you can also set them individually
+easeClient.setDefault("button", {style: "Primary"}) // Optional
 
-const login = new EaseLogin({token: token, commandsPath, componentsPath});
-
-login.client.on('ready', async (client) => {
+const client = easeClient.login();
+client.on('ready', async (client) => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
 ```
@@ -42,11 +43,16 @@ const intents = [
     Discord.GatewayIntentBits.MessageContent
 ]
 
-const login = new EaseLogin({token: token, commandsPath, componentsPath, intents});
-login.client.on('ready', async (client) => {
+const easeClient = new EaseClient("YOUR_TOKEN_HERE");
+easeClient.set("intents", intents);
+
+const client = easeClient.login();
+client.on('ready', async (client) => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
 ```
+
+This is just a little of our project, to see more details visit our (documentation)["https://camposcodes.gitbook.io/easediscordjs"]
 ## Authors
 
 - [@KevenCampos](https://www.github.com/KevenCampos)

@@ -1,4 +1,5 @@
 import Discord from "discord.js";
+import { CustomError } from "../index.mjs";
 
 export default class {
     constructor(embedData) {
@@ -20,7 +21,7 @@ export default class {
     
             if (this.fields) {
                 this.fields.forEach(field => {
-                    if (!field.name || !field.value) return new Error('>> Field name and value are required');
+                    if (!field.name || !field.value) return new CustomError('cyan', '>> Field name and value are required');
                     this.embed.addFields({name: field.name, value: field.value, inline: field.inline || false});
                 })
             }
@@ -37,7 +38,7 @@ export default class {
             return this.embed;
 
         }catch (error){
-            throw new Error(error.message);
+            throw new CustomError('cyan', error.message);
         }
     }
 
