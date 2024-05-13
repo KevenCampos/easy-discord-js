@@ -11,7 +11,7 @@ export default class {
             const disabled = buttonData.disabled || defaultSettingsCache.get("button")?.disabled;
             const emoji = buttonData.emoji || defaultSettingsCache.get("button")?.emoji;
 
-            if (!customId && !buttonData.url && !buttonData.callback) throw new CustomError('cyan', '>> Button: customId or url or callback is required');
+            if (!customId && !buttonData.url && !buttonData.onClick) throw new CustomError('cyan', '>> Button: customId or url or onClick is required');
             if (customId && buttonData.url) throw new CustomError('cyan', '>> Button: customId and url cannot be used together');
             if (!label) throw new CustomError('cyan', '>> Button label is required');
 
@@ -23,9 +23,9 @@ export default class {
             if (emoji) this.button.setEmoji(emoji);
             if (buttonData.url) this.button.setURL(buttonData.url);
             
-            if (buttonData.callback && !buttonData.url){
+            if (buttonData.onClick && !buttonData.url){
                 customId = `${label.replace(/ /g, "_").toLowerCase()}_${style}_${disabled}_${emoji}`;
-                new InteractionHandler({ customId: customId, callback: buttonData.callback});
+                new InteractionHandler({ customId: customId, run: buttonData.onClick});
             }
             
             if (customId) this.button.setCustomId(customId);

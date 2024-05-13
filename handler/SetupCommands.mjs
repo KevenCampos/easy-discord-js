@@ -12,13 +12,12 @@ export default class SetupCommand {
 
         this.commandsPath = commandsPath;
         this.componentsPath = componentsPath;
-
-        this.setup(client);
     }
 
-    setup = async (client) => {
+    setup = async () => {
         const root_path = path.resolve();
-        client = client;
+        const client = this.client;
+        
         client.slashCommands = new Discord.Collection();
         
         if (this.commandsPath){

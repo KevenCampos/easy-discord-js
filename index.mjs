@@ -5,7 +5,6 @@ import CreateRow from './components/CreateRow.mjs';
 import _CreateSelect from './components/CreateSelect.mjs';
 import InteractionHandler from './handler/InteractionHandler.mjs';
 import CreateModal from './components/CreateModal.mjs';
-import getInteractionCallback from './handler/getInteractionCallback.mjs';
 import defaultSettingsCache from './handler/defaultSettingsCache.mjs';
 import CustomError from './utils/CustomError.mjs';
 
@@ -19,7 +18,6 @@ export {
     CreateSelect,
     InteractionHandler,
     CreateModal,
-    getInteractionCallback,
     defaultSettingsCache,
     CustomError
 }

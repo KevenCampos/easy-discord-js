@@ -1,6 +1,6 @@
 {
   "name": "ease-discord-js",
-  "version": "1.0.7",
+  "version": "1.1.3",
   "description": "EaseDiscordJS is an unofficial extension of the 'discord.js' library. Our extension aims to simplify the development of Discord bots, promoting cleaner code and easier maintenance.  ",
   "homepage": "https://camposcodes.gitbook.io/easediscordjs/",
   "main": "index.mjs",

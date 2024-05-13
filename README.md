@@ -8,7 +8,7 @@ EaseDiscordJS is an unofficial extension of the "discord.js" library. Our extens
 - Callback functions
 - Less code, more efficiency
 - Code and performance optimization
-- Comprehensive (documentation)["https://camposcodes.gitbook.io/easediscordjs"]
+- Comprehensive [documentation](https://camposcodes.gitbook.io/easediscordjs)
 
 
 ## Installation
@@ -17,17 +17,19 @@ npm install ease-discord-js
 ```
 ## Example of use
 ```js
-import { EaseClient } from "ease-discord-js"
+import { EaseClient } from "ease-discord-js";
+
 const easeClient = new EaseClient("YOUR_TOKEN_HERE");
 
 // Setting the paths for the commands and components
-easeClient.set("commandsPath", "./_test/commands"); // Optional
-easeClient.set("componentsPath", "./_test/components"); // Optional
+easeClient.set("commandsPath", "./commands");
+easeClient.set("componentsPath", "./components"); //optional
 
-// Setting default values for the components, you can also set them individually
-easeClient.setDefault("button", {style: "Primary"}) // Optional
+// Setting default values for the components, you can also set them individually (optional)
+easeClient.setDefault("button", { style: "Primary" });
 
 const client = easeClient.login();
+
 client.on('ready', async (client) => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
@@ -36,23 +38,26 @@ You can also pass the intents you want to use within the object that will be sen
 
 **Example of login using intents:**
 ```js
-import Discord from "discord.js"
+import Discord from "discord.js";
+import { EaseClient } from "ease-discord-js";
 
 const intents = [
     Discord.GatewayIntentBits.Guilds,
     Discord.GatewayIntentBits.MessageContent
-]
+];
 
 const easeClient = new EaseClient("YOUR_TOKEN_HERE");
+easeClient.set("commandsPath", "./commands");
 easeClient.set("intents", intents);
 
 const client = easeClient.login();
+
 client.on('ready', async (client) => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
 ```
 
-This is just a little of our project, to see more details visit our (documentation)["https://camposcodes.gitbook.io/easediscordjs"]
+This is just a little of our project, to see more details visit our [documentation](https://camposcodes.gitbook.io/easediscordjs)
 ## Authors
 
 - [@KevenCampos](https://www.github.com/KevenCampos)

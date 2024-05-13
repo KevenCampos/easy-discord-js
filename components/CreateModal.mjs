@@ -6,7 +6,7 @@ const inputTypes = {text: Discord.TextInputBuilder}
 
 export default class {
     constructor(modalData) {
-        let {title, inputs, customId, callback} = modalData;
+        let {title, inputs, customId, onClick} = modalData;
 
         title = title || defaultSettingsCache.get("modal")?.title;
         customId = customId || defaultSettingsCache.get("modal")?.customId;
@@ -19,13 +19,13 @@ export default class {
             throw new CustomError('cyan', '>> Modal inputs is required');
         }
 
-        if (!customId && !callback){
-            throw new CustomError('cyan', '>> Modal customId or callback is required');
+        if (!customId && !onClick){
+            throw new CustomError('cyan', '>> Modal customId or onClick is required');
         }
 
-        if (callback){
+        if (onClick){
             customId = `${title.replace(/ /g, "_").toLowerCase()}_${inputs?.length}`;
-            new InteractionHandler({ customId: customId, callback: callback});
+            new InteractionHandler({ customId: customId, run: onClick});
         }
 
         this.modal = new Discord.ModalBuilder()

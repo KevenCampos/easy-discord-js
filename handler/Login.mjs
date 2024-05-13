@@ -57,27 +57,48 @@ export default class EaseClient {
 
     startListening = () => {
         this.client.on('ready', async () => {
-            new SetupCommand(this.client, this.commandsPath, this.componentsPath);
+            const setupCommand = new SetupCommand(this.client, this.commandsPath, this.componentsPath);
+            await setupCommand.setup();
+
+            this.commands = this.client.slashCommands;
+            this.client.easeClient = this;
         })
 
         this.client.on("interactionCreate", async (interaction) => {
-            
-            let customId_without_params = interaction?.customId?.split(":")[0];
-            const interactionHandler = interactionHandlers.get(interaction.customId) || interactionHandlers.get(customId_without_params);
-
-            if (interactionHandler) {
-                let params = [];
-
-                if (interactionHandler.useParams) {
-                    const separate_params = interaction.customId.split(":"); // separando os parametros, por exemplo: "customId: 'config_client_secret:guild_id:client_id'"
-                    params = separate_params.slice(1); // pegando os parametros, por exemplo: ['guild_id', 'client_id']
-                }
-
-                const callback = interactionHandlers.get(interactionHandler.useParams ? customId_without_params : interaction.customId)?.callback;
-                if (!callback) return console.log(`Callback not found for customId: ${interaction.customId}`);
-
-                interactionHandler.useParams ? callback.apply(null, [interaction, ...params]) : callback(interaction)
-            }
+            const runInteractionHandler = this.getInteractionCallback(interaction.customId, interaction) ;
+            if (runInteractionHandler) return await runInteractionHandler();
         })
+    }
+
+    invokeInteraction = async (interactionCustomId, interaction) => {
+        const runInteractionHandler = this.getInteractionCallback(interactionCustomId, interaction);
+        if (runInteractionHandler) return await runInteractionHandler();
+    }
+
+    invokeCommand = async (commandName, interaction) => {
+        const command = this.commands.get(commandName);
+        if (!command) return console.log(`Command not found: ${commandName}`);
+
+        await command.run(this.client, interaction);
+    }
+
+    getInteractionCallback = (customId, interaction) => {
+        let customId_without_params = customId?.split(":")[0];
+        const interactionHandler = interactionHandlers.get(customId) || interactionHandlers.get(customId_without_params);
+
+        if (interactionHandler) {
+            let params = [];
+
+            if (interactionHandler.useParams) {
+                const separate_params = customId.split(":"); // separando os parametros, por exemplo: ['guild_id', 'client_id']
+                params = separate_params.slice(1); // pegando os parametros, por exemplo: ['guild_id', 'client_id']
+            }
+
+            const callback = interactionHandlers.get(interactionHandler.useParams ? customId_without_params : customId)?.run;
+            if (!callback) return console.log(`\x1b[36mCallback not found for customId: ${interaction.customId}\x1b[0m`);
+
+            // vamos retornar a função para ser chamada posteriormente
+            return interactionHandler.useParams ? callback.bind(null, this.client, interaction, ...params) : callback.bind(null, this.client, interaction)
+        }
     }
 }
